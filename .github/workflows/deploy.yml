@@ -29,23 +29,15 @@ jobs:
         username: ${{ secrets.EC2_USER }}
         key: ${{ secrets.EC2_SSH_KEY }}
         script: |
-          # Update & install Docker & Docker Compose plugin
-          sudo apt update
-          sudo apt install -y docker.io
-          sudo apt install -y docker-compose-plugin
-
-          # Start Docker
+          # Start Docker if not running
           sudo systemctl start docker
           sudo systemctl enable docker
 
-          # Add user to docker group (so you don't need to use sudo for docker commands)
+          # Add user to Docker group if necessary
           sudo usermod -aG docker $USER || true
           newgrp docker || true
 
-          # Verify Docker Compose installation
-          docker compose version
-
           # Deploy the app
           cd ~/app
-          docker compose down || true
-          docker compose up --build -d
+          docker-compose down || true
+          docker-compose up --build -d
