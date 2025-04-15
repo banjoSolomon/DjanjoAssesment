@@ -63,3 +63,94 @@ Base API	http://3.90.123.45/api/
 Process Task	http://3.90.123.45/api/process/
 Check Status	http://3.90.123.45/api/status/<task_id>/
 Swagger Docs	http://3.90.123.45/swagger/
+
+
+
+🧩 Components Description
+1. Django REST Framework (DRF)
+Handles API requests (POST /process/ and GET /status/<task_id>/).
+
+Serializes input using ProcessRequestSerializer.
+
+Uses class-based views (APIView) for structure.
+
+2. Swagger (drf_yasg)
+Provides interactive API documentation.
+
+Accessible via /swagger/.
+
+3. Celery
+Task queue manager used to offload time-consuming operations.
+
+Tasks are created in Django and executed in the background.
+
+Defined in tasks.py.
+
+4. Redis
+Serves as:
+
+Message Broker for Celery
+
+Result Backend to store task status/results
+
+5. Celery Worker
+Separate process (Docker container) that:
+
+Listens for tasks from Redis
+
+Executes them
+
+Stores the results in Redis
+
+6. Docker & Docker Compose
+Dockerizes:
+
+Django app (web)
+
+Redis broker
+
+Celery worker
+
+Makes the system portable and easy to deploy
+
+7. AWS EC2
+Hosts the entire application
+
+Public IP provides access to endpoints:
+
+http://<EC2-IP>/api/process/
+
+http://<EC2-IP>/swagger/
+
+
+
+
+
+
+🔄 Request Flow Summary
+User sends POST request to /api/process/ with email and message.
+
+Django validates input, then queues the task using Celery.
+
+Celery pushes the task to Redis.
+
+Celery worker picks up the task from Redis and simulates a long-running operation.
+
+User can query task status at /api/status/<task_id>/ to check progress.
+
+Swagger UI allows testing and documentation browsing.
+
+📦 Deployment Highlights
+CI/CD via GitHub Actions pushes the code to EC2 on every master branch update.
+
+SSH and Docker Compose are used to:
+
+Stop existing containers
+
+Rebuild the app
+
+Spin it up again cleanly
+
+Redis runs in its own container
+
+Celery worker is decoupled from Django and runs independently
