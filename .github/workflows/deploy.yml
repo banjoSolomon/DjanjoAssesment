@@ -19,7 +19,7 @@ jobs:
         host: ${{ secrets.EC2_HOST }}
         username: ${{ secrets.EC2_USER }}
         key: ${{ secrets.EC2_SSH_KEY }}
-        source: "."              # You can adjust this if needed
+        source: "."
         target: "~/app"
 
     - name: SSH into EC2 and deploy
@@ -29,6 +29,19 @@ jobs:
         username: ${{ secrets.EC2_USER }}
         key: ${{ secrets.EC2_SSH_KEY }}
         script: |
+          # Update & install Docker & Docker Compose
+          sudo apt update
+          sudo apt install -y docker.io docker-compose
+
+          # Start Docker
+          sudo systemctl start docker
+          sudo systemctl enable docker
+
+          # Add user to docker group
+          sudo usermod -aG docker $USER || true
+          newgrp docker || true
+
+          # Deploy the app
           cd ~/app
           docker compose down || true
           docker compose up --build -d
