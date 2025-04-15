@@ -13,7 +13,7 @@ jobs:
     - name: Checkout code
       uses: actions/checkout@v2
 
-    - name: Set up Python
+    - name: Set up Python (if using Python)
       uses: actions/setup-python@v2
       with:
         python-version: '3.x'
@@ -22,11 +22,10 @@ jobs:
       run: |
         python -m pip install --upgrade pip
         pip install -r requirements.txt
-        pip install pytest  # Ensure pytest is installed
 
-    - name: Run tests
+    - name: Run tests (for Python example with pytest)
       run: |
-        pytest  # Run the tests after pytest is installed
+        pytest  
 
     - name: Copy files to EC2 via SSH
       uses: appleboy/scp-action@v0.1.3
