@@ -18,7 +18,7 @@ This project is a Django REST API that allows users to submit an email and messa
 
 ### 1. Clone the repository
 
-git clone https://github.com/your-username/your-repo.git
+git clone https://github.com/banjoSolomon/DjanjoAssesment
 cd your-repo
 
 2. Start the application using Docker Compose
