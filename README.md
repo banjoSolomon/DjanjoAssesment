@@ -55,14 +55,14 @@ GET /api/status/7f3c9ab2-f4be-4d42-bf9b-4e963fbf409f/
 
 
 Example for AWS EC2 Deployment
-EC2 instance public IP like 3.90.123.45:
+EC2 instance public IP like 35.85.59.155 :
 
 
 Feature	URL
-Base API	http://3.90.123.45/api/
-Process Task	http://3.90.123.45/api/process/
-Check Status	http://3.90.123.45/api/status/<task_id>/
-Swagger Docs	http://3.90.123.45/swagger/
+Base API	http://35.85.59.155 /api/
+Process Task	http://35.85.59.155/api/process/
+Check Status	http://35.85.59.155/api/status/<task_id>/
+Swagger Docs	http://35.85.59.155 /swagger/
 
 
 
